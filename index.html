@@ -1,0 +1,351 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>DP6 - Data-Driven Marketing</title>
+    
+    <!-- ======================================================= -->
+    <!-- ESPAÇO RESERVADO PARA O SNIPPET DO GTM (GOOGLE TAG MANAGER) -->
+    <!-- Cole o script do GTM no <head> logo abaixo desta linha    -->
+    <!-- ======================================================= -->
+    
+    <!-- CSS INTERNO: Estilo e Design System (Inspiração DP6) -->
+    <style>
+        :root {
+            --dp6-blue-dark: #0A1B2A;
+            --dp6-blue-brand: #004B87;
+            --dp6-blue-light: #00B4D8;
+            --dp6-gray-light: #F4F6F8;
+            --dp6-text-dark: #333333;
+            --dp6-white: #FFFFFF;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;
+        }
+
+        body {
+            background-color: var(--dp6-gray-light);
+            color: var(--dp6-text-dark);
+            line-height: 1.6;
+        }
+
+        /* Tipografia e Utilidades */
+        h1, h2, h3 { color: var(--dp6-blue-dark); margin-bottom: 15px; }
+        p { margin-bottom: 15px; }
+        a { text-decoration: none; color: var(--dp6-blue-brand); transition: 0.3s; }
+        a:hover { color: var(--dp6-blue-light); }
+        .container { max-width: 1200px; margin: 0 auto; padding: 0 20px; }
+        
+        /* Botões */
+        .btn {
+            display: inline-block;
+            background-color: var(--dp6-blue-light);
+            color: var(--dp6-white);
+            padding: 12px 24px;
+            border-radius: 4px;
+            font-weight: bold;
+            border: none;
+            cursor: pointer;
+            transition: background 0.3s;
+        }
+        .btn:hover { background-color: var(--dp6-blue-brand); color: var(--dp6-white); }
+        .btn-header { background-color: var(--dp6-blue-brand); }
+
+        /* Header */
+        header {
+            background-color: var(--dp6-white);
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+            padding: 20px 0;
+            position: sticky;
+            top: 0;
+            z-index: 100;
+        }
+        header .container {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+        .logo { font-size: 24px; font-weight: 900; color: var(--dp6-blue-dark); letter-spacing: 1px; }
+        .logo span { color: var(--dp6-blue-light); }
+        nav ul { list-style: none; display: flex; gap: 20px; align-items: center; }
+
+        /* Hero Section */
+        .hero {
+            background: linear-gradient(135deg, var(--dp6-blue-dark) 0%, var(--dp6-blue-brand) 100%);
+            color: var(--dp6-white);
+            padding: 80px 0;
+            text-align: center;
+        }
+        .hero h1 { color: var(--dp6-white); font-size: 40px; }
+        .hero p { font-size: 18px; max-width: 600px; margin: 0 auto 30px; }
+
+        /* Seção de Serviços */
+        .services { padding: 60px 0; text-align: center; }
+        .services-grid {
+            display: flex;
+            gap: 20px;
+            margin-top: 40px;
+            flex-wrap: wrap;
+        }
+        .service-card {
+            background: var(--dp6-white);
+            padding: 30px;
+            border-radius: 8px;
+            flex: 1;
+            min-width: 300px;
+            box-shadow: 0 4px 6px rgba(0,0,0,0.05);
+            border-top: 4px solid var(--dp6-blue-light);
+        }
+
+        /* Formulário de Leads */
+        .lead-section {
+            background-color: var(--dp6-white);
+            padding: 60px 0;
+        }
+        .lead-form {
+            max-width: 500px;
+            margin: 0 auto;
+            background: var(--dp6-gray-light);
+            padding: 30px;
+            border-radius: 8px;
+            box-shadow: 0 4px 10px rgba(0,0,0,0.05);
+        }
+        .form-group { margin-bottom: 20px; }
+        .form-group label { display: block; margin-bottom: 5px; font-weight: bold; }
+        .form-group input {
+            width: 100%;
+            padding: 12px;
+            border: 1px solid #ccc;
+            border-radius: 4px;
+            font-size: 16px;
+        }
+        .lead-form button { width: 100%; font-size: 18px; }
+
+        /* Footer */
+        footer {
+            background-color: var(--dp6-blue-dark);
+            color: var(--dp6-white);
+            text-align: center;
+            padding: 30px 0;
+            margin-top: auto;
+        }
+        footer a { color: var(--dp6-blue-light); }
+
+        /* Responsividade */
+        @media (max-width: 768px) {
+            header .container { flex-direction: column; gap: 15px; }
+            nav ul { flex-wrap: wrap; justify-content: center; }
+        }
+    </style>
+</head>
+
+<!-- ========================================================================= -->
+<!-- FECHAMENTO DO HEAD E ABERTURA DO BODY SEPARADOS CLARAMENTE -->
+<!-- Espaço reservado para o GTM (Google Tag Manager) - snippet <noscript>  -->
+<!-- ========================================================================= -->
+<body>
+
+    <!-- HEADER -->
+    <header>
+        <div class="container">
+            <div class="logo">DP<span>6</span> Data</div>
+            <nav>
+                <ul>
+                    <li><a href="#servicos">Serviços</a></li>
+                    <li><a href="#sobre">Sobre Nós</a></li>
+                    <li><a href="#contato" class="btn btn-header">Fale com um Consultor</a></li>
+                </ul>
+            </nav>
+        </div>
+    </header>
+
+    <!-- HERO SECTION -->
+    <section class="hero">
+        <div class="container">
+            <h1>Transforme Dados em Decisões Inteligentes</h1>
+            <p>Evolua sua maturidade digital com métricas assertivas, engenharia de dados avançada e estratégias de CRO que impulsionam resultados reais.</p>
+            <a href="#contato" class="btn">Comece sua jornada de dados</a>
+        </div>
+    </section>
+
+    <!-- SERVIÇOS / DIFERENCIAIS -->
+    <section id="servicos" class="services container">
+        <h2>Nossas Soluções</h2>
+        <p>Expertise técnica e estratégica para revolucionar seu marketing.</p>
+        <div class="services-grid">
+            <div class="service-card">
+                <h3>Digital Analytics</h3>
+                <p>Implementação avançada e auditoria de ferramentas como Google Analytics 4 (GA4) e Adobe Analytics.</p>
+                <a href="#saiba-mais-analytics">Saiba mais sobre Analytics</a>
+            </div>
+            <div class="service-card">
+                <h3>Data Engineering</h3>
+                <p>Construção de pipelines de dados, data lakes e integração de APIs para centralizar sua inteligência.</p>
+                <a href="#saiba-mais-engineering">Saiba mais sobre Engenharia</a>
+            </div>
+            <div class="service-card">
+                <h3>CRO & Testes A/B</h3>
+                <p>Otimização de conversão baseada em dados comportamentais e experimentação contínua.</p>
+                <a href="#saiba-mais-cro">Saiba mais sobre CRO</a>
+            </div>
+        </div>
+    </section>
+
+    <!-- CAPTURA DE LEADS (FORMULÁRIO) -->
+    <section id="contato" class="lead-section">
+        <div class="container">
+            <div class="lead-form">
+                <h2>Baixe nosso Whitepaper de Maturidade Digital</h2>
+                <p>Preencha os dados abaixo para receber o material gratuitamente.</p>
+                <form id="meu-formulario">
+                    <div class="form-group">
+                        <label for="nome">Nome Completo</label>
+                        <input type="text" id="nome" name="nome" placeholder="Ex: João Silva">
+                    </div>
+                    <div class="form-group">
+                        <label for="email">E-mail Corporativo</label>
+                        <input type="email" id="email" name="email" placeholder="joao@empresa.com.br">
+                    </div>
+                    <div class="form-group">
+                        <label for="cargo">Cargo / Empresa</label>
+                        <input type="text" id="cargo" name="cargo" placeholder="Ex: Gerente de Marketing / XPTO">
+                    </div>
+                    <button type="submit" class="btn">Quero baixar o Whitepaper</button>
+                </form>
+            </div>
+        </div>
+    </section>
+
+    <!-- FOOTER -->
+    <footer>
+        <div class="container">
+            <p>&copy; 2026 LP Pedagógica Inspiração DP6. Desenvolvido para fins de estudo.</p>
+            <p>Siga-nos no <a href="#linkedin">LinkedIn</a> | <a href="#instagram">Instagram</a></p>
+        </div>
+    </footer>
+
+    <!-- ========================================================================= -->
+    <!-- IMPLEMENTAÇÃO DO DATALAYER E LÓGICA DE RASTREAMENTO (ANALYTICS)           -->
+    <!-- ========================================================================= -->
+    <script>
+        /**
+         * 1. INICIALIZAÇÃO DO DATALAYER
+         * Cria o array do dataLayer caso ele ainda não exista (boa prática antes do GTM carregar).
+         */
+        window.dataLayer = window.dataLayer || [];
+
+        /**
+         * 2. FUNÇÃO DE SANITIZAÇÃO (STRICT SANITIZATION)
+         * Regras aplicadas:
+         * - Lowercase (caixa baixa)
+         * - Remoção de acentos e caracteres especiais
+         * - Substituição de espaços por hífen (-)
+         */
+        function sanitizeString(str) {
+            if (!str) return 'valor-nao-definido';
+            
+            return str
+                .normalize("NFD") // Separa os acentos das letras (ex: 'é' vira 'e' + '´')
+                .replace(/[\u0300-\u036f]/g, "") // Remove os acentos matematicamente
+                .toLowerCase() // Transforma tudo em caixa baixa
+                .replace(/[^a-z0-9\s-]/g, "") // Remove caracteres especiais (mantém letras, números, espaços e hifens)
+                .trim() // Remove espaços sobrando no início e fim
+                .replace(/\s+/g, "-"); // Substitui um ou mais espaços por um único hífen
+        }
+
+        /**
+         * 3. FUNÇÃO CENTRALIZADORA DE DISPARO (PUSH)
+         * Recebe o tipo e o título do elemento, aplica a sanitização e envia pro dataLayer.
+         */
+        function pushToDataLayer(type, title) {
+            // Nome estático da página conforme as regras da documentação
+            const sectionName = "lp-home"; 
+
+            // Criando o payload aplicando a sanitização estrita nas variáveis
+            const payload = {
+                'event': 'clique',
+                'custom_section': sanitizeString(sectionName),
+                'custom_type': sanitizeString(type),
+                'custom_title': sanitizeString(title)
+            };
+
+            // Disparo para a camada de dados
+            window.dataLayer.push(payload);
+
+            // [APENAS PARA FINS PEDAGÓGICOS] - Logando no console para visualização imediata do desenvolvedor
+            console.log("🔥 [DataLayer Push Realizado]:", payload);
+        }
+
+        /**
+         * 4. RASTREAMENTO DE CLIQUES GENÉRICOS (LINKS E BOTÕES)
+         * Varremos todos os links e botões da página que não sejam de envio (submit) de form.
+         */
+        document.addEventListener('DOMContentLoaded', function() {
+            // Seleciona as tags 'a' (links) e botões (exceto o botão de submit do form)
+            const clickableElements = document.querySelectorAll('a, button:not([type="submit"])');
+
+            clickableElements.forEach(function(el) {
+                el.addEventListener('click', function(e) {
+                    
+                    // Captura do Título do elemento (prioriza o texto interno)
+                    const elementTitle = this.innerText || this.getAttribute('aria-label') || this.value || 'sem-titulo';
+                    
+                    // Definição do Tipo do elemento e contextualização
+                    let elementType = 'link'; 
+                    if (this.tagName.toLowerCase() === 'button') {
+                        elementType = 'botao';
+                    }
+
+                    // Melhoria semântica de analytics: classificar botões do header/footer
+                    if (this.closest('header')) {
+                        elementType += '-header'; // ex: botao-header ou link-header
+                    } else if (this.closest('footer')) {
+                        elementType += '-footer'; 
+                    }
+
+                    // Envia para o dataLayer
+                    pushToDataLayer(elementType, elementTitle);
+                });
+            });
+        });
+
+        /**
+         * 5. RASTREAMENTO CONDICIONAL DO FORMULÁRIO (IMPORTANTE 1)
+         * O evento só deve ser disparado se o usuário preencher todos os campos requeridos.
+         */
+        const formElement = document.getElementById('meu-formulario');
+        if(formElement) {
+            formElement.addEventListener('submit', function(e) {
+                // Impede o envio padrão da página para que possamos validar e testar a LP (Comportamento Pedagógico)
+                e.preventDefault(); 
+
+                // Captura dos campos
+                const nome = document.getElementById('nome').value.trim();
+                const email = document.getElementById('email').value.trim();
+                const cargo = document.getElementById('cargo').value.trim();
+
+                // Regra Importante 1: Verifica se TODOS os campos estão preenchidos
+                if (nome !== "" && email !== "" && cargo !== "") {
+                    
+                    // Dispara o evento de sucesso do dataLayer passando as infos do botão de submit
+                    const submitBtnText = this.querySelector('button[type="submit"]').innerText;
+                    pushToDataLayer('submit', submitBtnText);
+                    
+                    alert("Sucesso! Os dados foram enviados e o evento disparado no dataLayer (veja o console).");
+                    
+                    // Limpa o formulário após o envio
+                    this.reset();
+                } else {
+                    // O dataLayer de submit/envio não dispara aqui, atendendo ao requisito.
+                    alert("Atenção: Por favor, preencha todos os campos do formulário antes de enviar.");
+                }
+            });
+        }
+    </script>
+</body>
+</html>
