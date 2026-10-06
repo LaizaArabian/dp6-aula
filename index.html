@@ -294,12 +294,16 @@
 
     /* ---------- 2) PUSH PADRONIZADO ---------- */
     function pushClick(type, title) {
-      window.dataLayer.push({
+      var payload = {
         'event': 'clique',
         'custom_section': sanitize(PAGE_NAME),
         'custom_type': sanitize(type),
         'custom_title': sanitize(title)
-      });
+      };
+      window.dataLayer.push(payload);
+
+      /* [PEDAGÓGICO] Mostra cada push no console (F12) para conferir na hora. */
+      console.log('[DataLayer push]', payload);
     }
 
     /* ---------- 3) LISTENER GLOBAL DE CLIQUES ----------
@@ -336,10 +340,12 @@
         var telefone = form.telefone.value.replace(/\D/g, ''); // apenas dígitos
 
         /* Validação de cada campo */
+        /* Regra do exercício: o evento só dispara se TODOS os campos estiverem
+           preenchidos (não vazios). Sem exigir formato específico de e-mail/telefone. */
         var checks = [
-          { field: form.nome, ok: nome.length > 1 },
-          { field: form.email, ok: /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email) },
-          { field: form.telefone, ok: telefone.length >= 10 && telefone.length <= 11 }
+          { field: form.nome, ok: nome !== '' },
+          { field: form.email, ok: email !== '' },
+          { field: form.telefone, ok: telefone !== '' }
         ];
 
         var allValid = true;
@@ -350,7 +356,7 @@
 
         if (!allValid) {
           msg.className = 'form-msg error';
-          msg.textContent = 'Preencha nome, e-mail e telefone válidos para continuar.';
+          msg.textContent = 'Preencha todos os campos (nome, e-mail e telefone) para continuar.';
           return; // <-- sai SEM disparar o dataLayer
         }
 
